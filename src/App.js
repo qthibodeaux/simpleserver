@@ -1,7 +1,28 @@
 import logo from './logo.svg';
 import './App.css';
+import { useEffect, useState } from 'react'
+import { supabase } from './supabaseClient';
 
 function App() {
+  const [name, setName] = useState("")
+
+  useEffect(() => {
+    getProducts()
+  }, [])
+
+  async function getProducts () {
+    try {
+      const { data, error } = await supabase
+        .from("products")
+        .then("*")
+        .limit(10)
+        if (error) throw error;
+        setName(data)
+    } catch (error) {
+      alert(error.message)
+    }
+  }
+
   return (
     <div className="App">
       <header className="App-header">
